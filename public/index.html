@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Room Models</title>
+    <script src="resources/js/resonance-audio.min.js"></script>
+
+    <script src="https://rawgit.com/aframevr/aframe/2e14ef3/dist/aframe-master.min.js"></script>
+    <script src="https://rawgit.com/feiss/aframe-environment-component/master/dist/aframe-environment-component.min.js"></script>
+    <script src="https://unpkg.com/super-hands@2.1.0/dist/super-hands.min.js"></script>
+    <script src="//cdn.rawgit.com/donmccurdy/aframe-physics-system/v2.1.0/dist/aframe-physics-system.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/aframe-layout-component@5.2.0/index.min.js"></script>
+
+    <script src="resources/js/room-models.js"></script>
+
+  </head>
+  <body>
+  
+   
+
+       
+
+    <a-scene id="scene" vr-mode-ui="enabled: true" physics="gravity:0">
+
+        <a-assets>
+            <img id="marble" src="./marble.png">
+            <img id="glass" src="./unnamed.png">
+            <img id="wood" src="./wood.png">
+            <img id="curtains" src="./curtains.png">
+            <img id="foam" src="./foam.jpg">
+            <img id="transparent" src="./glass.png">
+            <a-mixin id="mycursor" position="0 0 -0.5" raycaster geometry="primitive: ring; radiusOuter: 0.008; radiusInner: 0.005; segmentsTheta: 32" material="color: white; shader: flat" static-body="shape: sphere; sphereRadius: 0.001" super-hands="colliderEvent: raycaster-intersection;colliderEventProperty: els;colliderEndEvent:raycaster-intersection-cleared; colliderEndEventProperty: clearedEls;colliderState:"></a-mixin>
+            <a-mixin id="mytouch" physics-collider phase-shift collision-filter="collisionForces: false" static-body="shape: sphere; sphereRadius: 0.02" super-hands="colliderEvent: collisions; colliderEventProperty: els; colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;colliderState:"></a-mixin>
+            <a-mixin id="cube" dynamic-body="angularDamping:.5;linearDamping:.15" hoverable grabbable stretchable draggable shadow="receive:true;castShadow:true"></a-mixin>
+            </a-mixin>
+
+            <a-mixin id="menu" dynamic-body hoverable grabbable stretchable draggable ></a-mixin>
+          </a-mixin>
+
+            <a-mixin id="wall" static-body geometry="primitive: plane; height: 10; width: 20;" material="wireframe: true;shader:flat;color:#42b9f4"></a-mixin>
+                
+            <a-mixin id="ground" shadow="receive:false;cast:false;" material="wireframe: true;shader:flat;color:#42b9f4" static-body geometry="primitive: plane; height: 20; width: 20" ></a-mixin>
+        </a-assets>
+
+
+              <!-- ground collider keeps objets from falling -->
+              <a-box position="0 .05 0" static-body width=100 height=0.001 depth=100 visible="false"></a-box>
+
+              <a-entity position="0 -.001 0" shadow="receive:true" environment="lightPosition: 0 -0.01 -0.4;playArea:1.25; groundYScale: 50;groundTexture:squares"></a-entity>
+  
+   
+
+  
+      <a-sphere id="sound-obj" x class="cube" mixin="cube" position="-0d 1.6 -3.25" radius=".75"material="color:#f44336">
+        <a-animation attribute="color"
+        dur="280"
+        from="#f44336"
+        to="green"
+        begin="click"
+        direction="alternate"
+        repeat="0"></a-animation>
+
+    </a-sphere>
+
+
+ <a-text id="text1" class="text" material="shader:flat;" width="2.5" position="-.45 3 -3.25" rotation="20 0 "  value="Click to Play/Pause" text="">    
+    </a-text> 
+ <a-text id="text2" material="shader:flat" width="2.5" rotation="20 0 0" position="-.48 2.75 -3.25" value="Click & Hold to Move" text=""></a-text>
+ 
+
+
+ <a-entity progressive-controls="gazeMixin: mycursor; touchMixin: mytouch; override: true; objects: .cube, .menu ; maxLevel: point;">
+            <a-camera>
+                <a-entity listener class="gazecaster"></a-entity>
+              </a-camera>
+            <a-entity  class="right-controller"></a-entity>
+            <a-entity  class="left-controller"></a-entity>
+        </a-entity>
+
+        <a-entity rotation="-90 0 0" position="0 16.3054254257165 0" light="type:spot;intensity:1;castShadow:true"></a-entity>
+        <a-entity mixin="wall" position="0 5 -10"></a-entity>
+   
+        <a-entity material="true" mixin="wall" rotation="0 180 0" position="0 5 10"></a-entity>
+        <a-entity wireframe="true" mixin="wall" rotation="0 90 0" position="-10 5 0"></a-entity>
+        <a-entity mixin="wall" rotation="0 -90 0" position="10 5 0"></a-entity>
+
+        <a-entity mixin="ground" rotation="90 0 0" position="0 10 0"></a-entity>
+
+
+  
+        <a-entity class="menu">
+          <a-box material="color:white;opacity:0.3" rotation="0 -40 0" position="3.600766890384161 1.3602149011189815 -2.6535701809014234" scale="2.25 2.25 0.1" geometry="">
+             <a-text width="2" position="-.42 .4 0 " value="Select Wall Material:" text=""></a-text>  
+          </a-box>
+  
+        <a-entity rotation="0 -40 0" position="3 1 -3" layout="type: box; margin:.65;columns:3">
+            <a-box class="room" curtains scale=".35 .35 .05" material="shader:flat" src="#curtains">
+                <a-text position="-.45 .85 .1" value="Curtains"></a-text>
+                <a-animation attribute="scale" repeat="1" direction="alternate" begin="click" dur="200" to=".75 .75 .25"></a-animation>
+            </a-box>
+            <a-box class="room" foam scale=".35 .35 .05" material="shader:flat" src="#foam">
+                <a-text position="-.3 .85 .1" value="Foam"></a-text>
+                <a-animation attribute="scale" repeat="1" direction="alternate" begin="click" dur="200" to=".75 .75 .25"></a-animation>
+            </a-box>
+
+            <a-box class="room" transparent scale=".35 .35 .05" material="shader:flat" src="#transparent">
+                <a-text position="-.62d .85 .1" value="Transparent"></a-text>
+                <a-animation attribute="scale" repeat="1" direction="alternate" begin="click" dur="200" to=".75 .75 .25"></a-animation>
+            </a-box>
+            <a-box class="room" marble scale=".35 .35 .05" material="shader:flat" src="#marble">
+                <a-text position="-.35 .85 .1" value="Marble"></a-text>
+                <a-animation attribute="scale" repeat="1" direction="alternate" begin="click" dur="200" to=".75 .75 .25"></a-animation>
+            </a-box>
+
+            <a-box class="room" glass scale=".35 .35 .05" material="shader:flat" src="#glass">
+                <a-text position="-.35 .85 .1" value="Glass"></a-text>
+                <a-animation attribute="scale" repeat="1" direction="alternate" begin="click" dur="200" to=".75 .75 .25"></a-animation>
+            </a-box>
+            <a-box class="room" wood scale=".35 .35 .0d5" material="shader:flat" src="#wood">
+                <a-text position="-.35 .85 .1" value="Wood"></a-text>
+                <a-animation attribute="scale" repeat="1" direction="alternate" begin="click" dur="200" to=".75 .75 .25"></a-animation>
+            </a-box>
+ 
+          </a-entity>
+        </a-entity>
+  
+  
+      </a-scene>
+
+
+
+  </body>
+</html>

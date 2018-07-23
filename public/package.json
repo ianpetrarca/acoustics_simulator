@@ -1,0 +1,14 @@
+{
+  "name": "room-simulator",
+  "version": "1.0.0",
+  "description": "room-simulator",
+  "main": "index.js",
+  "scripts": {
+    "start": "budo --live --verbose --port 3000 --open"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "budo": "^11.3.2"
+  }
+}
